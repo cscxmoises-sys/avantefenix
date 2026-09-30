@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AVANTE Chat</title>
+  <style>
+    :root{--bg:#0e1116;--panel:#171b22;--panel2:#1f252e;--line:#303743;--text:#f4f6f8;--muted:#98a2b0;--orange:#ff7a00;--green:#25c77a;--red:#ff6464;--client:#f4f5f7;--ink:#20242a}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    button,input,textarea{font:inherit}.hidden{display:none!important}.brand{display:flex;align-items:center;gap:10px;font-weight:900}.logo{width:38px;height:38px;border-radius:12px;background:var(--orange);display:grid;place-items:center;color:#fff;font-weight:900}.muted{color:var(--muted)}
+    .top{height:66px;border-bottom:1px solid var(--line);padding:0 18px;display:flex;align-items:center;justify-content:space-between;background:#10141a;position:sticky;top:0;z-index:10}.top small{color:var(--muted)}
+    .status{font-size:12px;padding:7px 10px;border-radius:999px;background:#163123;color:#8be4b2}
+    .client-page{min-height:100vh;background:#eef1f4;color:var(--ink)}.client-top{height:64px;background:#171b22;color:white;padding:0 16px;display:flex;align-items:center;justify-content:space-between}.client-wrap{max-width:540px;margin:0 auto;padding:18px}.login-card,.chat-mobile{background:white;border-radius:22px;box-shadow:0 18px 55px rgba(20,30,45,.12);overflow:hidden}.login-body{padding:28px}.login-body h1{font-size:23px;margin:0 0 7px}.login-body p{color:#6f7782;font-size:14px;margin:0 0 22px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}.field input{width:100%;height:50px;border:1px solid #d7dce3;border-radius:13px;padding:0 14px;font-size:16px;outline:0}.field input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,122,0,.12)}.primary{width:100%;height:50px;border:0;border-radius:13px;background:var(--orange);color:#fff;font-weight:900;margin-top:13px;cursor:pointer}.error{margin-top:12px;padding:10px 12px;background:#fff0f0;color:#b83b3b;border-radius:10px;font-size:13px}.hint{margin-top:18px;padding:12px;background:#f7f8fa;border-radius:12px;font-size:12px;color:#68717c;line-height:1.5}
+    .chat-mobile{height:calc(100vh - 100px);display:flex;flex-direction:column}.chat-mobile-head{padding:16px;border-bottom:1px solid #e5e8ec;display:flex;align-items:center;justify-content:space-between}.chat-mobile-head h2{margin:0;font-size:17px}.chat-mobile-head div small{display:block;color:#7b8490;margin-top:3px}.client-messages{flex:1;overflow:auto;background:#f2f4f6;padding:16px}.bubble{max-width:82%;padding:10px 12px;border-radius:15px;margin-bottom:9px;font-size:14px;line-height:1.35}.bubble.cliente{margin-left:auto;background:#ffd8b3;border-bottom-right-radius:5px}.bubble.atendente{background:white;border:1px solid #e2e5e9;border-bottom-left-radius:5px}.bubble .time{display:block;font-size:10px;color:#8a929c;margin-top:5px}.client-compose{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px;border-top:1px solid #e4e7eb;background:white}.client-compose textarea{resize:none;min-height:46px;max-height:110px;border:1px solid #d8dde4;border-radius:13px;padding:12px;outline:0}.send{border:0;background:var(--orange);color:white;border-radius:13px;padding:0 18px;font-weight:900;cursor:pointer}
+    .agent-page{min-height:100vh}.agent-main{display:grid;grid-template-columns:330px minmax(420px,1fr) 330px;gap:14px;padding:14px;height:calc(100vh - 66px)}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;min-height:0}.panel-head{padding:16px;border-bottom:1px solid var(--line)}.panel-head h2,.panel-head h3{margin:0;font-size:15px}.panel-head p{margin:5px 0 0;font-size:12px;color:var(--muted)}.queue{height:calc(100% - 70px);overflow:auto;padding:10px}.ticket{padding:13px;background:var(--panel2);border:1px solid transparent;border-radius:13px;margin-bottom:8px;cursor:pointer}.ticket:hover,.ticket.active{border-color:#805226;background:#2b241d}.ticket-top{display:flex;justify-content:space-between;gap:10px}.ticket-name{font-weight:800;font-size:14px}.ticket-status{font-size:10px;border-radius:999px;padding:4px 7px;background:#333b47;color:#d7dce4}.ticket-status.wait{background:#44301d;color:#ffb875}.ticket-preview{font-size:12px;color:var(--muted);margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ticket-time{font-size:10px;color:#e9a45e;margin-top:6px}.chat-panel{display:flex;flex-direction:column}.agent-chat-head{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.agent-chat-head strong{display:block}.agent-chat-head span{font-size:11px;color:var(--muted)}.actions{display:flex;gap:7px}.btn{border:1px solid var(--line);background:var(--panel2);color:white;padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer}.btn.orange{background:var(--orange);border-color:var(--orange)}.btn.red{background:#351e20;color:#ff9393;border-color:#613338}.agent-messages{flex:1;overflow:auto;padding:18px}.agent-bubble{max-width:75%;padding:10px 12px;border-radius:15px;margin-bottom:9px;font-size:14px;line-height:1.35}.agent-bubble.CLIENTE{background:#272d36;border:1px solid #38404d;border-bottom-left-radius:5px}.agent-bubble.ATENDENTE{margin-left:auto;background:#533116;border:1px solid #7b4921;border-bottom-right-radius:5px}.agent-bubble .time{display:block;color:#919aa6;font-size:10px;margin-top:5px}.agent-compose{display:grid;grid-template-columns:1fr auto;gap:8px;padding:11px;border-top:1px solid var(--line)}.agent-compose textarea{resize:none;min-height:46px;max-height:110px;background:var(--panel2);border:1px solid var(--line);border-radius:13px;color:white;padding:12px;outline:0}.details-body{padding:13px;overflow:auto;height:calc(100% - 68px)}.data-card{background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:10px}.data-card h4{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#b2bac6;margin:0 0 10px}.row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.055);font-size:12px}.row:last-child{border-bottom:0}.row span:first-child{color:var(--muted)}.row strong{text-align:right;max-width:58%;word-break:break-word}.empty{height:100%;display:grid;place-items:center;text-align:center;color:var(--muted);padding:30px}.empty strong{display:block;color:#dfe4ea;margin-bottom:6px}.toast{position:fixed;right:18px;bottom:18px;background:#171b22;color:#fff;border:1px solid var(--line);padding:12px 14px;border-radius:11px;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none;z-index:99}.toast.show{opacity:1;transform:none}
+    @media(max-width:1050px){.agent-main{grid-template-columns:280px 1fr}.details-panel{display:none}}@media(max-width:720px){.agent-main{grid-template-columns:1fr;height:auto}.queue-panel{max-height:290px}.chat-panel{height:calc(100vh - 390px);min-height:520px}.top small{display:none}.agent-bubble{max-width:88%}.client-wrap{padding:10px}.chat-mobile{height:calc(100vh - 84px)}}
+  </style>
+</head>
+<body>
+<script>
+  const TEMPLATE_VIEW = '<?= view ?>';
+  const TEMPLATE_BASE = '<?= baseUrl ?>';
+  const QUERY_VIEW = 'atendente';
+  const VIEW = (TEMPLATE_VIEW.indexOf('<?') >= 0 ? (QUERY_VIEW || 'cliente') : (TEMPLATE_VIEW || QUERY_VIEW || 'cliente')).toLowerCase();
+  const BASE_URL = TEMPLATE_BASE.indexOf('<?') >= 0 ? location.href.split('?')[0].split('#')[0] : TEMPLATE_BASE;
+  const HAS_GAS = typeof google !== 'undefined' && google.script && google.script.run;
+</script>
+
+<section id="clienteView" class="client-page hidden">
+  <div class="client-top">
+    <div class="brand"><div class="logo">A</div><div>AVANTE CHAT</div></div>
+    <div style="display:flex;gap:8px;align-items:center"><a href="atendente.html" style="color:#cbd2da;font-size:12px;text-decoration:none">Painel do atendente</a><div class="status">Ambiente seguro</div></div>
+  </div>
+  <div class="client-wrap">
+    <div id="loginCard" class="login-card">
+      <div class="login-body">
+        <h1>Continue seu atendimento</h1>
+        <p>Informe seu CPF para localizar seu cadastro e entrar no atendimento.</p>
+        <div class="field">
+          <label>CPF</label>
+          <input id="cpfInput" inputmode="numeric" maxlength="14" placeholder="000.000.000-00" autocomplete="off">
+        </div>
+        <button id="entrarBtn" class="primary" onclick="entrarCliente()">Entrar no atendimento</button>
+        <div id="loginError" class="error hidden"></div>
+        <div class="hint"><strong>CPFs de teste:</strong><br>123.456.789-01<br>987.654.321-00<br>111.222.333-44</div>
+      </div>
+    </div>
+
+    <div id="chatCliente" class="chat-mobile hidden">
+      <div class="chat-mobile-head">
+        <div><h2 id="clienteNome">Atendimento AVANTE</h2><small id="clienteProtocolo"></small></div>
+        <span id="clienteStatus" class="status">Aguardando</span>
+      </div>
+      <div id="clienteMensagens" class="client-messages"></div>
+      <div class="client-compose">
+        <textarea id="clienteTexto" placeholder="Digite sua mensagem..."></textarea>
+        <button class="send" onclick="enviarCliente()">Enviar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="atendenteView" class="agent-page hidden">
+  <div class="top">
+    <div class="brand"><div class="logo">A</div><div>AVANTE CHAT <small>Central de atendimento</small></div></div>
+    <div style="display:flex;gap:8px;align-items:center"><a href="cliente.html" style="color:#cbd2da;font-size:12px;text-decoration:none">Abrir como cliente</a><div class="status">Online</div></div>
+  </div>
+  <div class="agent-main">
+    <aside class="panel queue-panel">
+      <div class="panel-head"><h2>Fila de atendimento</h2><p id="filaResumo">Carregando...</p></div>
+      <div id="fila" class="queue"></div>
+    </aside>
+
+    <main class="panel chat-panel">
+      <div id="chatVazio" class="empty"><div><strong>Nenhum atendimento selecionado</strong>Quando o cliente informar o CPF, ele aparecerá automaticamente na fila.</div></div>
+      <div id="chatAtivo" class="hidden" style="height:100%;display:flex;flex-direction:column">
+        <div class="agent-chat-head">
+          <div><strong id="atNome">Cliente</strong><span id="atProtocolo"></span></div>
+          <div class="actions"><button class="btn orange" onclick="assumir()">Assumir</button><button class="btn red" onclick="encerrar()">Encerrar</button></div>
+        </div>
+        <div id="atMensagens" class="agent-messages"></div>
+        <div class="agent-compose"><textarea id="atTexto" placeholder="Digite sua resposta..."></textarea><button class="send" onclick="enviarAtendente()">Enviar</button></div>
+      </div>
+    </main>
+
+    <aside class="panel details-panel">
+      <div class="panel-head"><h3>Dados do cliente</h3><p>Carregados pelo CPF informado</p></div>
+      <div id="detalhes" class="details-body"><div class="empty"><div>Selecione um cliente na fila.</div></div></div>
+    </aside>
+  </div>
+</section>
+
+<div id="toast" class="toast"></div>
+
+<script>
+  const DEMO_CLIENTES = {
+    '12345678901': {cpf:'12345678901',nome:'João da Silva',telefone:'(51) 99999-1001',plano:'420 Mega',cidade:'Cachoeirinha',status:'ATIVO',contrato:'CTR-10001',vencimento:'10'},
+    '98765432100': {cpf:'98765432100',nome:'Maria Souza',telefone:'(51) 99999-1002',plano:'600 Mega',cidade:'Gravataí',status:'ATIVO',contrato:'CTR-10002',vencimento:'15'},
+    '11122233344': {cpf:'11122233344',nome:'Carlos Oliveira',telefone:'(51) 99999-1003',plano:'220 Mega',cidade:'Cachoeirinha',status:'ATIVO',contrato:'CTR-10003',vencimento:'20'}
+  };
+  const DB_KEY='avante_chat_demo_db_v2';
+  const CHANNEL_NAME='avante-chat-sync';
+  const syncChannel = 'BroadcastChannel' in window ? new BroadcastChannel(CHANNEL_NAME) : null;
+  let sessionCliente = localStorage.getItem('avante_chat_session') || '';
+  let sessaoSelecionada = '';
+  let dadosAtuais = null;
+  let filaCache = [];
+  let pollingCliente = null;
+  let pollingAtendente = null;
+
+  if(syncChannel) syncChannel.onmessage=()=>sincronizarAgora();
+  window.addEventListener('storage',e=>{ if(e.key===DB_KEY) sincronizarAgora(); });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    if (VIEW === 'atendente') iniciarAtendente(); else iniciarCliente();
+    document.getElementById('cpfInput')?.addEventListener('input', e => e.target.value = formatarCpf(e.target.value));
+    document.getElementById('cpfInput')?.addEventListener('keydown', e => { if (e.key === 'Enter') entrarCliente(); });
+    document.getElementById('clienteTexto')?.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarCliente(); } });
+    document.getElementById('atTexto')?.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarAtendente(); } });
+  });
+
+  function sincronizarAgora(){
+    if(VIEW==='atendente'){ atualizarFila(); if(sessaoSelecionada) carregarAtendimento(sessaoSelecionada,false); }
+    else if(sessionCliente) carregarCliente();
+  }
+
+  function api(method,args,ok,fail){
+    args=args||[]; ok=ok||(()=>{}); fail=fail||(()=>{});
+    if(HAS_GAS){
+      const r=google.script.run.withSuccessHandler(ok).withFailureHandler(fail);
+      if(method==='entrarCliente') return r.entrarCliente(args[0]);
+      if(method==='listarAtendimentos') return r.listarAtendimentos();
+      if(method==='obterAtendimento') return r.obterAtendimento(args[0]);
+      if(method==='obterSessaoCliente') return r.obterSessaoCliente(args[0]);
+      if(method==='enviarMensagem') return r.enviarMensagem(args[0],args[1],args[2]);
+      if(method==='assumirAtendimento') return r.assumirAtendimento(args[0],args[1]);
+      if(method==='encerrarAtendimento') return r.encerrarAtendimento(args[0]);
+    }
+    try{ ok(localApi(method,args)); }catch(e){ fail(e); }
+  }
+
+  function carregarDb(){
+    try{ const d=JSON.parse(localStorage.getItem(DB_KEY)||''); if(d&&Array.isArray(d.atendimentos)&&Array.isArray(d.mensagens)) return d; }catch(e){}
+    const d={atendimentos:[],mensagens:[]}; localStorage.setItem(DB_KEY,JSON.stringify(d)); return d;
+  }
+  function salvarDb(db){ localStorage.setItem(DB_KEY,JSON.stringify(db)); if(syncChannel) syncChannel.postMessage('update'); }
+  function idLocal(){ return 'S'+Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+  function protocoloLocal(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return 'AVA'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+p(d.getHours())+p(d.getMinutes())+p(d.getSeconds()); }
+
+  function localApi(method,args){
+    const db=carregarDb();
+    if(method==='entrarCliente'){
+      const cpf=String(args[0]||'').replace(/\D/g,'');
+      if(cpf.length!==11) throw new Error('Informe um CPF com 11 números.');
+      const c=DEMO_CLIENTES[cpf]; if(!c) throw new Error('CPF não localizado na base de clientes.');
+      let a=[...db.atendimentos].reverse().find(x=>x.cpf===cpf&&x.status!=='ENCERRADO');
+      if(!a){ const agora=new Date().toISOString(); a={sessionId:idLocal(),protocolo:protocoloLocal(),cpf,status:'AGUARDANDO',atendente:'',criadoEm:agora,atualizadoEm:agora}; db.atendimentos.push(a); salvarDb(db); }
+      return {ok:true,sessionId:a.sessionId,cliente:{nome:c.nome,primeiroNome:c.nome.split(' ')[0]},atendimento:a};
+    }
+    if(method==='listarAtendimentos'){
+      return db.atendimentos.filter(a=>a.status!=='ENCERRADO').map(a=>{
+        const c=DEMO_CLIENTES[a.cpf]||{};
+        const msgs=db.mensagens.filter(m=>m.sessionId===a.sessionId).sort((x,y)=>new Date(x.dataHora)-new Date(y.dataHora));
+        const u=msgs[msgs.length-1];
+        return {...a,nome:c.nome,telefone:c.telefone,plano:c.plano,cidade:c.cidade,statusCliente:c.status,contrato:c.contrato,vencimento:c.vencimento,ultimaMensagem:u?u.texto:'Cliente identificado e aguardando atendimento.',ultimaMensagemEm:u?u.dataHora:a.criadoEm};
+      }).sort((a,b)=>new Date(b.ultimaMensagemEm)-new Date(a.ultimaMensagemEm));
+    }
+    if(method==='obterAtendimento'){
+      const a=db.atendimentos.find(x=>x.sessionId===args[0]); if(!a) throw new Error('Atendimento não encontrado.');
+      const c=DEMO_CLIENTES[a.cpf]||{}; const mensagens=db.mensagens.filter(m=>m.sessionId===a.sessionId).sort((x,y)=>new Date(x.dataHora)-new Date(y.dataHora));
+      return {atendimento:a,cliente:c,mensagens};
+    }
+    if(method==='obterSessaoCliente'){
+      const a=db.atendimentos.find(x=>x.sessionId===args[0]); if(!a) throw new Error('Sessão não encontrada.');
+      const c=DEMO_CLIENTES[a.cpf]||{nome:'Cliente'}; const mensagens=db.mensagens.filter(m=>m.sessionId===a.sessionId).sort((x,y)=>new Date(x.dataHora)-new Date(y.dataHora));
+      return {atendimento:{sessionId:a.sessionId,status:a.status,protocolo:a.protocolo,criadoEm:a.criadoEm},cliente:{nome:c.nome},mensagens};
+    }
+    if(method==='enviarMensagem'){
+      const [sid,autor,texto0]=args, texto=String(texto0||'').trim(); const a=db.atendimentos.find(x=>x.sessionId===sid);
+      if(!a) throw new Error('Atendimento não encontrado.'); if(a.status==='ENCERRADO') throw new Error('Este atendimento já foi encerrado.'); if(!texto) throw new Error('Digite uma mensagem.');
+      const agora=new Date().toISOString(); db.mensagens.push({id:idLocal(),sessionId:sid,autor,texto,dataHora:agora}); if(autor==='ATENDENTE') a.status='EM_ATENDIMENTO'; a.atualizadoEm=agora; salvarDb(db); return {ok:true,dataHora:agora};
+    }
+    if(method==='assumirAtendimento'){
+      const a=db.atendimentos.find(x=>x.sessionId===args[0]); if(!a) throw new Error('Atendimento não encontrado.'); a.status='EM_ATENDIMENTO'; a.atendente=args[1]||'Atendente AVANTE'; a.atualizadoEm=new Date().toISOString(); salvarDb(db); return {ok:true};
+    }
+    if(method==='encerrarAtendimento'){
+      const a=db.atendimentos.find(x=>x.sessionId===args[0]); if(!a) throw new Error('Atendimento não encontrado.'); a.status='ENCERRADO'; a.atualizadoEm=new Date().toISOString(); salvarDb(db); return {ok:true};
+    }
+    throw new Error('Ação indisponível.');
+  }
+
+  function iniciarCliente(){
+    document.getElementById('clienteView').classList.remove('hidden');
+    if (sessionCliente) carregarCliente();
+  }
+
+  function entrarCliente(){
+    const cpf = document.getElementById('cpfInput').value;
+    const btn = document.getElementById('entrarBtn');
+    erroLogin(''); btn.disabled = true; btn.textContent = 'Entrando...';
+    api('entrarCliente',[cpf],res=>{
+      btn.disabled=false; btn.textContent='Entrar no atendimento'; sessionCliente=res.sessionId; localStorage.setItem('avante_chat_session',sessionCliente); mostrarChatCliente(res); carregarCliente(); if(!pollingCliente) pollingCliente=setInterval(carregarCliente,1800);
+    },err=>{ btn.disabled=false; btn.textContent='Entrar no atendimento'; erroLogin(mensagemErro(err)); });
+  }
+
+  function mostrarChatCliente(res){
+    document.getElementById('loginCard').classList.add('hidden'); document.getElementById('chatCliente').classList.remove('hidden');
+    if(res&&res.cliente) document.getElementById('clienteNome').textContent='Olá, '+(res.cliente.primeiroNome||res.cliente.nome||'Cliente');
+  }
+
+  function carregarCliente(){
+    if(!sessionCliente) return;
+    api('obterSessaoCliente',[sessionCliente],res=>{
+      mostrarChatCliente(res); document.getElementById('clienteNome').textContent='Olá, '+((res.cliente.nome||'Cliente').split(' ')[0]); document.getElementById('clienteProtocolo').textContent='Protocolo '+res.atendimento.protocolo; document.getElementById('clienteStatus').textContent=labelStatus(res.atendimento.status); renderMensagensCliente(res.mensagens||[]);
+      const enc=res.atendimento.status==='ENCERRADO'; document.getElementById('clienteTexto').disabled=enc; document.querySelector('.client-compose .send').disabled=enc;
+    },()=>{ localStorage.removeItem('avante_chat_session'); sessionCliente=''; document.getElementById('chatCliente').classList.add('hidden'); document.getElementById('loginCard').classList.remove('hidden'); if(pollingCliente) clearInterval(pollingCliente); });
+  }
+
+  function enviarCliente(){ const el=document.getElementById('clienteTexto'),texto=el.value.trim(); if(!texto||!sessionCliente)return; el.value=''; api('enviarMensagem',[sessionCliente,'CLIENTE',texto],carregarCliente,e=>toast(mensagemErro(e))); }
+
+  function renderMensagensCliente(msgs){
+    const box=document.getElementById('clienteMensagens'),wasBottom=box.scrollHeight-box.scrollTop-box.clientHeight<80;
+    box.innerHTML=msgs.length?msgs.map(m=>`<div class="bubble ${m.autor==='CLIENTE'?'cliente':'atendente'}">${esc(m.texto)}<span class="time">${hora(m.dataHora)}</span></div>`).join(''):'<div style="text-align:center;color:#7d8691;font-size:13px;padding:30px 8px">Seu atendimento foi identificado. Envie uma mensagem para iniciar a conversa.</div>'; if(wasBottom||msgs.length<3) box.scrollTop=box.scrollHeight;
+  }
+
+  function iniciarAtendente(){ document.getElementById('atendenteView').classList.remove('hidden'); atualizarFila(); pollingAtendente=setInterval(()=>{atualizarFila();if(sessaoSelecionada)carregarAtendimento(sessaoSelecionada,false);},1800); }
+  function atualizarFila(){ api('listarAtendimentos',[],lista=>{filaCache=lista||[];renderFila();},e=>document.getElementById('filaResumo').textContent=mensagemErro(e)); }
+  function renderFila(){
+    document.getElementById('filaResumo').textContent=filaCache.length+(filaCache.length===1?' atendimento ativo':' atendimentos ativos'); const fila=document.getElementById('fila'); if(!filaCache.length){fila.innerHTML='<div class="empty" style="height:auto;padding:35px 14px"><div>Nenhum cliente aguardando.</div></div>';return;}
+    fila.innerHTML=filaCache.map(a=>`<div class="ticket ${a.sessionId===sessaoSelecionada?'active':''}" onclick="selecionar('${a.sessionId}')"><div class="ticket-top"><span class="ticket-name">${esc(a.nome||'Cliente')}</span><span class="ticket-status ${a.status==='AGUARDANDO'?'wait':''}">${labelStatus(a.status)}</span></div><div class="ticket-preview">${esc(a.ultimaMensagem||'')}</div><div class="ticket-time">${tempoRelativo(a.ultimaMensagemEm||a.criadoEm)} · ${esc(a.plano||'')}</div></div>`).join('');
+  }
+  function selecionar(id){sessaoSelecionada=id;renderFila();carregarAtendimento(id,true);}
+  function carregarAtendimento(id,rolar){ api('obterAtendimento',[id],res=>{dadosAtuais=res;document.getElementById('chatVazio').classList.add('hidden');document.getElementById('chatAtivo').classList.remove('hidden');document.getElementById('atNome').textContent=res.cliente.nome||'Cliente';document.getElementById('atProtocolo').textContent=res.atendimento.protocolo+' · '+labelStatus(res.atendimento.status);renderMensagensAtendente(res.mensagens||[],rolar);renderDetalhes(res);},e=>toast(mensagemErro(e))); }
+  function renderMensagensAtendente(msgs,rolar){ const box=document.getElementById('atMensagens'),wasBottom=box.scrollHeight-box.scrollTop-box.clientHeight<80;box.innerHTML=msgs.length?msgs.map(m=>`<div class="agent-bubble ${m.autor}">${esc(m.texto)}<span class="time">${m.autor==='CLIENTE'?'Cliente':'Atendente'} · ${hora(m.dataHora)}</span></div>`).join(''):'<div class="empty"><div><strong>Cliente identificado</strong>Aguardando a primeira mensagem.</div></div>';if(rolar||wasBottom||msgs.length<3)box.scrollTop=box.scrollHeight; }
+  function renderDetalhes(res){ const c=res.cliente||{},a=res.atendimento||{};document.getElementById('detalhes').innerHTML=`<div class="data-card"><h4>Cadastro</h4>${linha('Nome',c.nome)}${linha('CPF',formatarCpf(c.cpf||a.cpf||''))}${linha('Telefone',c.telefone)}${linha('Cidade',c.cidade)}</div><div class="data-card"><h4>Serviço</h4>${linha('Plano',c.plano)}${linha('Contrato',c.contrato)}${linha('Vencimento',c.vencimento?'Dia '+c.vencimento:'')}${linha('Status',c.status)}</div><div class="data-card"><h4>Atendimento</h4>${linha('Protocolo',a.protocolo)}${linha('Situação',labelStatus(a.status))}${linha('Atendente',a.atendente||'Ainda não assumido')}</div>`; }
+  function enviarAtendente(){if(!sessaoSelecionada)return;const el=document.getElementById('atTexto'),texto=el.value.trim();if(!texto)return;el.value='';api('enviarMensagem',[sessaoSelecionada,'ATENDENTE',texto],()=>{carregarAtendimento(sessaoSelecionada,true);atualizarFila();},e=>toast(mensagemErro(e)));}
+  function assumir(){if(!sessaoSelecionada)return;api('assumirAtendimento',[sessaoSelecionada,'Atendente AVANTE'],()=>{toast('Atendimento assumido.');carregarAtendimento(sessaoSelecionada,false);atualizarFila();},e=>toast(mensagemErro(e)));}
+  function encerrar(){if(!sessaoSelecionada)return;if(!confirm('Encerrar este atendimento?'))return;api('encerrarAtendimento',[sessaoSelecionada],()=>{toast('Atendimento encerrado.');sessaoSelecionada='';dadosAtuais=null;document.getElementById('chatAtivo').classList.add('hidden');document.getElementById('chatVazio').classList.remove('hidden');document.getElementById('detalhes').innerHTML='<div class="empty"><div>Selecione um cliente na fila.</div></div>';atualizarFila();},e=>toast(mensagemErro(e)));}
+
+  function linha(k,v){return `<div class="row"><span>${esc(k)}</span><strong>${esc(v||'Não informado')}</strong></div>`;}
+  function labelStatus(s){return ({AGUARDANDO:'Aguardando',EM_ATENDIMENTO:'Em atendimento',ENCERRADO:'Encerrado'})[s]||s||'';}
+  function hora(v){const d=new Date(v);return isNaN(d)?'':d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+  function tempoRelativo(v){const d=new Date(v),dif=Math.max(0,Date.now()-d.getTime()),min=Math.floor(dif/60000);if(min<1)return'agora';if(min<60)return min+' min';const h=Math.floor(min/60);return h<24?h+' h':Math.floor(h/24)+' d';}
+  function formatarCpf(v){v=String(v||'').replace(/\D/g,'').slice(0,11);return v.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2');}
+  function esc(v){return String(v??'').replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]));}
+  function mensagemErro(e){return(e&&e.message)?e.message.replace(/^Exception:\s*/,''):String(e||'Erro inesperado.');}
+  function erroLogin(msg){const el=document.getElementById('loginError');if(!msg){el.classList.add('hidden');el.textContent='';}else{el.textContent=msg;el.classList.remove('hidden');}}
+  function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>el.classList.remove('show'),2200);}
+</script>
+</body>
+</html>
